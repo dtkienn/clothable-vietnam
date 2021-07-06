@@ -1,0 +1,89 @@
+<style>
+    #insta-feed {
+        width: 100%;
+        padding: unset !important;
+    }
+    #insta-feed h2 {
+        display: none;
+    }
+    .insta-heading { 
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between; 
+        align-items: center;
+        margin-bottom: 71px;
+        padding-top: 130px;
+    }
+    #insta-feed, .instafeed-shopify {
+        margin-top: unset !important; 
+    }
+    .heading-right.btn {
+        color: black;
+        background-color: white;
+    }
+    .heading-left {
+        font-size: 28px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 28px;
+        letter-spacing: 0em;
+    }
+    @media only screen and (min-width: 750px) {
+        .slide-page:nth-child(4n+1) .js-lazy-image {
+            padding-right: 24px;
+        }
+        .slide-page:nth-child(4n+2) .js-lazy-image {
+            padding-left: 12px;
+            padding-right: 16px;
+        }
+        .slide-page:nth-child(4n+3) .js-lazy-image {
+            padding-left: 16px;
+            padding-right: 12px;
+        }
+        .slide-page:nth-child(4n+4) .js-lazy-image {
+            padding-left: 24px;
+        }
+    }
+</style>
+    {% unless section.settings.html_area contains "feed-" %}
+    <div class="custom-page-width">
+        <div class="insta-heading">
+            <div class="heading-left"> {{ section.settings.heading }}</div>
+            <a href="{{ section.settings.btn_link }}" class="heading-right btn">{{ section.settings.btn }}</a>
+        </div>
+        <div id="insta-feed">
+        </div>
+    </div>
+    {% endunless %}
+
+{%schema%}
+    {
+        "name":"Instafeed App",
+        "settings": [
+            {
+                "type": "text",
+                "id": "heading",
+                "label": "Section heading",
+                "default": "Follow us"
+            },
+            {
+                "type": "text",
+                "id": "btn",
+                "label": "Button text",
+                "default": "@OCTOGONY"
+            },
+            {
+                "type": "text",
+                "id": "btn_link",
+                "label": "Button link",
+                "default": "https://www.instagram.com/octogony/"
+            }
+        ],
+    "presets": [
+        {
+            "name":"Instafeed App",
+            "category":"Instagram Feed"
+        }
+    ]
+    }
+{%endschema%}

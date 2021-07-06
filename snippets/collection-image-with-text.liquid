@@ -1,0 +1,51 @@
+
+{% assign enable_section = false %}
+{% if collection.metafields.image_with_text.enable and collection.metafields.image_with_text.enable == 'true' %}
+    {% assign enable_section = true %}
+{% endif %}
+
+{% if collection.metafields.image_with_text.position and collection.metafields.image_with_text.position != blank %}
+    {% assign image_position = collection.metafields.image_with_text.position %}
+{% endif %}
+{% if image_position != 'left' and image_position != 'right' %}
+    {% assign image_position = 'left' %}
+{% endif %}
+
+{% if enable_section %}
+<div class="grid__item one-whole collection-image-with-text">
+    {% capture image_layout %}
+    <div class="feature-row__item">
+        {% if collection.metafields.image_with_text.image and collection.metafields.image_with_text.image != blank %}
+        {% capture img_id %}FeatureRowImage{% endcapture %}
+        {% capture wrapper_id %}FeatureRowImageWrapper{% endcapture %}
+        {%- assign img_url = collection.metafields.image_with_text.image -%}
+        <img id="{{ img_id }}"
+            class="feature-row__image lazyload"
+            src="{{ img_url }}" >
+        {% else %}
+        {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+        {% endif %}
+    </div>
+    {% endcapture %}
+
+    <div class="collection feature-row">
+    {% if image_position == 'left' %}
+        {{ image_layout }}
+    {% endif %}
+
+    <div class="feature-content feature-row__item feature-row__text feature-row__text--{{ image_position }}">
+            <div style="margin-left: 22px; margin-right: 22px">
+                {% if collection.metafields.image_with_text.heading and collection.metafields.image_with_text.heading != blank %}
+                <h2>{{ collection.metafields.image_with_text.heading }}</h2>
+                {% endif %}
+                {% if collection.metafields.image_with_text.sub_heading and collection.metafields.image_with_text.sub_heading != blank %}
+                <p>{{ collection.metafields.image_with_text.sub_heading }}</p></div>
+                {% endif %}
+    </div>
+
+    {% if image_position == 'right' %}
+        {{ image_layout }}
+    {% endif %}
+    </div>
+</div>
+{% endif %}

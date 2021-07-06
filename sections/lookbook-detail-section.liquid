@@ -1,0 +1,318 @@
+{% for block in section.blocks %}
+    {% if block.type == 'select' %}
+    {% case block.settings.img_alignment %}
+    {% when 'left' %}
+        {% assign large_img_alignment = 'large lookbook-detail-left flex-mobile-top' %}
+        {% assign small_img_alignment = 'lookbook-detail-right flex-mobile-bottom' %}
+    {% when 'right' %} 
+        {% assign large_img_alignment = 'large lookbook-detail-right flex-mobile-bottom' %}
+        {% assign small_img_alignment = 'lookbook-detail-left flex-mobile-top' %}
+    {% endcase %}
+        <div class="custom-page-width lookbook-detail-container">
+            {% if block.settings.large_img %}
+            <div class="{{ large_img_alignment }} lookbook-img-container " style="height: auto">
+                <img class="lookbook-large-img" src="{{ block.settings.large_img | img_url: 'master' }}" alt="" width="624px">
+                {% if block.settings.product1 %}
+                <div class="lookbook-product-name">
+                    {% for i in (1..4) %}
+                        {%- assign product_handle = "product" | append: i -%}
+                        {%- assign featured_product = all_products[block.settings[product_handle]] -%} 
+                        {% unless block.settings[product_handle] == empty %}
+                        <a href="{{ featured_product.url }}">
+                            <div class="product-info-large">{{ featured_product.title }}<span class="money-append">	{{ featured_product.price | money }}</span></div>
+                        </a>
+                        {% endunless %}
+                    {% endfor %}          
+                </div>                
+                {% endif %}        
+            </div>
+            
+            {% endif %}
+            {% if block.settings.small_img %}
+            <div class="{{ small_img_alignment }} lookbook-img-container" style="height: auto;">
+                <img class="lookbook-small-img" src="{{block.settings.small_img | img_url: 'master' }}" alt="" width="624px">
+            </div>
+            {% endif %}
+        </div>
+
+    {% elsif block.type == 'blog' %}
+        <div class="custom-page-width product-line lookbook-detail-container">
+            {% for i in (1..4) %}
+            {%- assign product_handle = "product" | append: i -%}
+            {%- assign featured_product = all_products[block.settings[product_handle]] -%} 
+                <div class="lookbook-product-card">
+                    <a href="{{ featured_product.url}}">
+                    {% unless block.settings[product_handle] == empty %}
+                    <img style="max-height: 392px;"src="{{ featured_product.images[0] | img_url: '294x392' }}" alt="">
+                    {% endunless %}
+                    <div class="lookbook-product-card-info">
+                        <div>{{ featured_product.title }}</div>
+                        <div class="lookbook-info-price">{{ featured_product.price | money }}</div>
+                    </div>
+                    </a>
+                </div>
+            {% endfor %}          
+        </div>
+    {% endif %} 
+{% endfor %} 
+<style>
+    @media only screen and (min-width: 899px) {
+        .lookbook-info-price {
+            padding-left: 15px;
+        }
+    }
+    @media only screen and (max-width: 899px) {
+        .flex-mobile-top .lookbook-small-img {
+            padding-top: unset;
+            margin-bottom: 64px;
+        }
+    }
+    .money-append::before {
+        content: '-'
+    }
+    .money-append {
+        padding-left: 5px;
+    }
+    .product-info-large {
+        display: flex;
+    }
+    @media only screen and (max-width: 899px) {
+        .product-info-large {
+            justify-content: space-between;
+        }
+        .money-append::before {
+            content: '';
+        }
+        .money-append {
+            padding-left: unset;
+        }
+    }
+    @media only screen and (min-width: 899px) {
+    .lookbook-detail-left .lookbook-small-img {
+        padding-left: 2.5rem;
+        padding-top: 6rem;
+        padding-right: 6.5rem; 
+    }
+    }
+    .product-line:not(:last-child) {
+        padding-bottom: 80px;
+    }
+    @media only screen and (max-width: 899px) {
+        .product-line:not(:last-child) {
+            padding-bottom: 96px;
+        }
+    }
+    .lookbook-detail-left {
+        order: 1; 
+    }
+    .lookbook-detail-right {
+        order: 2;
+    }
+    .large.lookbook-detail-left {
+        padding-right: 34px;
+    }
+    .large.lookbook-detail-right {
+        padding-left: 34px;
+    }
+    @media only screen and (max-width: 899px) {
+        .flex-mobile-top {
+            order: 1 !important;
+            padding-left: unset !important;
+            padding-right: unset !important;
+        }
+        .flex-mobile-bottom {
+            order: 2 !important;
+            padding-right: unset !important;
+            padding-left: unset !important;
+        }
+    }
+    .lookbook-large-img {
+        max-height: unset;
+    }
+    .lookbook-product-card {
+        display: flex;
+        flex-direction: column;
+    }
+    .lookbook-product-card-info {
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 21px;
+        letter-spacing: 0.03em;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        text-transform: uppercase;
+        margin-top: 16px;
+        font-weight: 700;
+    }
+    @media only screen and (max-width: 899px) {
+        .lookbook-product-card-info {
+            flex-direction: column;
+        }
+    }
+    .lookbook-product-name.custom-page-width {
+        max-width: 1440px;
+    }
+    .lookbook-product-card a {
+        border: none !important;
+    }
+    @media only screen and (min-width: 899px) {
+        .lookbook-product-card:not(:first-child) {
+            padding-left: 36px;
+        }
+    }
+    .lookbook-detail-container {
+        display: flex; 
+        flex-direction: row;
+        justify-content: center;
+    }
+    .lookbook-detail-container:not(:first-child) {
+        height: auto;
+        margin-top: 128px;
+    }
+    @media only screen and (max-width: 899px) {
+        .lookbook-detail-container:not(:first-child) {
+            margin-top: 64px;
+        }
+        .lookbook-detail-container:first-child {
+            padding-top: 32px;
+        }
+    }
+    .lookbook-img-container {
+        height: auto;
+    }
+    .lookbook-small-img {
+        padding-left: 6.5rem;
+        padding-top: 6rem;
+        padding-right: 2.5rem;
+    }
+    @media only screen and (max-width: 899px) {
+        .lookbook-small-img {
+            padding-left: 62px !important;
+            padding-right: 62px !important;
+            padding-top: 64px;
+        }
+    }
+    .lookbook-product-name {
+        font-size: 15px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 23px;
+        letter-spacing: 0em;
+        text-align: left;
+        color: #212121;
+        padding-top: 20px;
+        text-transform: uppercase;
+    }
+    @media only screen and (max-width: 749px) {
+        .lookbook-img-container img:first-child {
+            max-height: unset;
+            width: 100%;
+        }
+    } 
+    @media only screen and (max-width: 899px) {
+        .lookbook-detail-container {
+            flex-wrap: wrap;
+            flex-basis: 50%;
+        }
+        .lookbook-product-card:nth-child(2n+1) {
+            padding-right: 7.5px;
+        }
+        .lookbook-product-card:nth-child(2n) {
+            padding-left: 7.5px;
+        }
+        .lookbook-product-card {
+            padding-bottom: 1.5rem;
+        }
+        
+    }
+    @media only screen and (max-width: 647px) {
+        .lookbook-product-card {
+            flex: 1 1 50%;
+        }
+    }
+</style>
+{% schema %}
+{
+    "blocks": [
+        {
+            "name": "Featured product image",
+            "type": "select",
+            "settings": [
+                {
+                    "type": "image_picker",
+                    "label": "Choose large image",
+                    "id":"large_img"
+                },
+                {
+                    "type": "image_picker",
+                    "label": "Choose small image",
+                    "id":"small_img"
+                },
+                {
+                    "type": "product",
+                    "id": "product1",
+                    "label": "Choose first product with price"
+                },
+                {
+                    "type": "product",
+                    "id": "product2",
+                    "label": "Choose your product with price"
+                },
+                {
+                    "type": "product",
+                    "id": "product3",
+                    "label": "Choose your product with price"
+                },
+                {
+                    "type": "product",
+                    "id": "product4",
+                    "label": "Choose your product with price"
+                },
+                {
+                    "type": "select",
+                    "id": "img_alignment",
+                    "label": "Large image alignment",
+                    "options": [
+                        {
+                            "value": "left",
+                            "label": "Left"
+                        },
+                        {
+                            "value": "right",
+                            "label": "Right"
+                        }
+                    ],
+                    "default": "left"
+                }
+            ] 
+        },
+        {
+            "name": "Product line",
+            "type": "blog",
+            "settings": [
+                {
+                    "type": "product",
+                    "id": "product1",
+                    "label": "Choose your product"
+                },
+                {
+                    "type": "product",
+                    "label": "Choose your product",
+                    "id": "product2"
+                },                {
+                    "type": "product",
+                    "label": "Choose your product",
+                    "id": "product3"
+                },
+                {
+                    "type": "product",
+                    "label": "Choose your product",
+                    "id": "product4"
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}

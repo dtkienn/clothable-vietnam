@@ -1,0 +1,41 @@
+<div class="info custom-page-width">
+    <div class="info-footer-container">
+        {% for block in section.blocks %}
+            <div class="info-footer">
+                {{ block.settings.svg }}
+                <div class="info-footer-text">{{ block.settings.text }}</div>   
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+{% schema %}
+{
+    "name": "Site logo",
+    "blocks": [
+        {
+            "name": "Logo",
+            "type": "select",
+            "settings": [
+                {
+                    "type": "textarea",
+                    "id": "svg",
+                    "label": "Enter svg code"
+                },
+                {
+                    "type": "text",
+                    "id": "text",
+                    "label": "Enter label"
+                }
+            ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "Site logo",
+            "category": "Icons"
+        }
+    ]
+}
+{% endschema %}

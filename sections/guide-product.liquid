@@ -1,0 +1,195 @@
+<div class="guide-product-container">
+    <div class="text-center guide-text-large guide-title">
+        {{ section.settings.section_title }}
+    </div>
+    <div class="guide-product-box">
+        {% for block in section.blocks %}
+        {% assign product = all_products[block.settings.guide_product] %}
+            <div class="guide-product">
+                <div class="feature-row">
+                    {% capture image_layout %}
+                      <div class="feature-row__item">
+                        {% if product != blank %}
+                            <a href="{{ product.url }}" class="guide-product-img-wrap">
+                                {% capture image_size %}master
+                                {% endcapture %}
+                                <img src="{{ product.featured_image | img_url: image_size }}" srcset="{{ product.featured_image | img_url: image_size }} 180w, {{ product.featured_image | img_url: image_size, scale: 2 }} 360w, {{ product.featured_image | img_url: image_size, scale: 3 }} 540w" alt="" class="maintenance__popup-product-img">
+                            </a>
+                        {% endif %}
+                      </div>
+                    {% endcapture %}
+                  
+                      {% if block.settings.layout == 'left' %}
+                        {{ image_layout }}
+                      {% endif %}
+                  
+                      <div class="guide-content feature-row__item feature-row__text feature-row__text--{{ block.settings.layout }}">
+                        {% if block.settings.guide_product != blank %}
+                          <h2 class="guide-text-large">{{ product.title | escape }}</h2>
+                        {% endif %}
+                        {% if block.settings.text != blank %}
+                          <div class="guide-text-small">{{ block.settings.text }}</div>
+                        {% endif %}
+                        <div class="guide-product-info">
+                            <div class="guide-product-price">
+                                {{ product.price | money }}
+                            </div>
+                            <form action="/cart/add" method="post" id="product-form-{{ product.id }}">
+                                <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+                                <div class="guide-atc">
+                                    <!-- <button style="display: flex;align-items: center; justify-content: center;" type="submit" name="add" class="btn">
+                                        <span style= "padding-top: 5px; padding-right: 13px;">
+                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M14.9912 9.19961C15.1013 11.1395 14.0694 12.1989 14.0694 12.1989C13.4503 12.928 11.9369 13.1206 11.9369 13.1206C10.8501 13.3545 8.11221 13.3408 8.11221 13.3408C8.11221 13.3408 5.29182 13.3545 4.20494 13.1206C4.20494 13.1206 2.69155 12.9143 2.07244 12.1989C2.07244 12.1989 1.06811 11.1395 1.06811 9.19961C0.958043 7.25972 2.0862 6.20036 2.0862 6.20036C2.70531 5.47118 4.21869 5.27857 4.21869 5.27857C5.30558 5.04468 8.12597 5.05844 8.12597 5.05844C8.12597 5.05844 10.8638 5.04468 11.9507 5.27857C11.9507 5.27857 13.4641 5.48494 14.0832 6.20036C14.0832 6.20036 14.9912 7.24597 14.9912 9.19961Z" stroke="#FAFAFA" stroke-width="1.5" stroke-miterlimit="10"/>
+                                            <path d="M4.75543 7.84697L4.67289 6.02149C4.65913 5.8564 4.52155 4.20543 4.89301 3.11855C5.27824 2.03167 6.71017 2 7.99962 2C9.49962 2 11.4281 2.05918 11.4006 4.42556L11.4418 6.00774V7.84697" stroke="#FAFAFA" stroke-width="1.5" stroke-miterlimit="10"/>
+                                            </svg>
+                                        </span>
+                                        {{ 'products.product.add_to_cart' | t }}
+                                    </button>  -->
+                                    <button type="submit" name="add"
+                    
+                                    aria-label="Add to cart"
+                                    class="btn product-form__cart-submit guide-btn"
+                                    aria-haspopup="dialog"
+                                    data-add-to-cart>
+                                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                          <path d="M14.9918 9.19954C15.1018 11.1394 14.07 12.1988 14.07 12.1988C13.4509 12.928 11.9375 13.1206 11.9375 13.1206C10.8506 13.3545 8.11276 13.3407 8.11276 13.3407C8.11276 13.3407 5.29237 13.3545 4.20549 13.1206C4.20549 13.1206 2.6921 12.9142 2.07299 12.1988C2.07299 12.1988 1.06866 11.1394 1.06866 9.19954C0.958592 7.25966 2.08675 6.2003 2.08675 6.2003C2.70586 5.47112 4.21924 5.27851 4.21924 5.27851C5.30613 5.04462 8.12652 5.05838 8.12652 5.05838C8.12652 5.05838 10.8644 5.04462 11.9513 5.27851C11.9513 5.27851 13.4646 5.48488 14.0837 6.2003C14.0837 6.2003 14.9918 7.24591 14.9918 9.19954Z" stroke="#212121" stroke-width="1.5" stroke-miterlimit="10"/>
+                                          <path d="M4.75581 7.84697L4.67327 6.02149C4.65951 5.8564 4.52193 4.20543 4.89339 3.11855C5.27862 2.03167 6.71055 2 8 2C9.5 2 11.4285 2.05918 11.4009 4.42556L11.4422 6.00774V7.84697" stroke="#212121" stroke-width="1.5" stroke-miterlimit="10"/>
+                                      </svg>
+                                      <span data-add-to-cart-text>
+                                      
+                                        Add to cart
+                                      
+                                      </span>
+                                      <span class="hide" data-loader>
+                                        <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-spinner" viewBox="0 0 20 20"><path d="M7.229 1.173a9.25 9.25 0 1 0 11.655 11.412 1.25 1.25 0 1 0-2.4-.698 6.75 6.75 0 1 1-8.506-8.329 1.25 1.25 0 1 0-.75-2.385z" fill="#919EAB"/></svg>
+                                      </span>
+                                    </button>
+                
+                                </div>
+                            </form>
+                        </div>
+                      </div>
+                  
+                      {% if block.settings.layout == 'right' %}
+                        {{ image_layout }}
+                      {% endif %}
+                    </div>
+                
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% schema %}
+{
+    "name": "Guide page products",
+    "settings": [
+        {
+            "type": "text",
+            "id": "section_title",
+            "label": "Section title"
+        }
+    ],
+    "blocks": [
+        {
+            "name": "Guide product",
+            "type": "select",
+            "settings": [
+                {
+                    "type": "product",
+                    "id": "guide_product",
+                    "label": "Choose product"
+                },
+                {
+                    "type": "select",
+                    "id": "layout",
+                    "label": {
+                      "cs": "Zarovnání obrázku",
+                      "da": "Justering af billede",
+                      "de": "Fotoausrichtung",
+                      "en": "Image alignment",
+                      "es": "Alineación de imagen",
+                      "fi": "Kuvan tasaus",
+                      "fr": "Alignement de l'image",
+                      "it": "Allineamento immagine",
+                      "ja": "画像アラインメント",
+                      "ko": "이미지 정렬",
+                      "nb": "Bildejustering",
+                      "nl": "Afbeelding uitlijnen",
+                      "pl": "Wyrównanie obrazu",
+                      "pt-BR": "Alinhamento da imagem",
+                      "pt-PT": "Alinhamento da imagem",
+                      "sv": "Bildjustering",
+                      "th": "การจัดวางรูปภาพ",
+                      "tr": "Görsel hizalaması",
+                      "vi": "Căn chỉnh hình ảnh",
+                      "zh-CN": "图片对齐方式",
+                      "zh-TW": "圖片對齊"
+                    },
+                    "default": "left",
+                    "options": [
+                      {
+                        "value": "left",
+                        "label": {
+                          "cs": "Doleva",
+                          "da": "Venstre",
+                          "de": "Links",
+                          "en": "Left",
+                          "es": "Izquierda",
+                          "fi": "Vasen",
+                          "fr": "Gauche",
+                          "it": "Sinistra",
+                          "ja": "左",
+                          "ko": "왼쪽",
+                          "nb": "Venstre",
+                          "nl": "Links",
+                          "pl": "Do lewej",
+                          "pt-BR": "Esquerda",
+                          "pt-PT": "Esquerda",
+                          "sv": "Vänster",
+                          "th": "ด้านซ้าย",
+                          "tr": "Sol",
+                          "vi": "Bên trái",
+                          "zh-CN": "左侧",
+                          "zh-TW": "左方"
+                        }
+                      },
+                      {
+                        "value": "right",
+                        "label": {
+                          "cs": "Doprava",
+                          "da": "Højre",
+                          "de": "Rechts",
+                          "en": "Right",
+                          "es": "Derecha",
+                          "fi": "Oikea",
+                          "fr": "Droite",
+                          "it": "Destra",
+                          "ja": "右",
+                          "ko": "오른쪽",
+                          "nb": "Høyre",
+                          "nl": "Rechts",
+                          "pl": "Do prawej",
+                          "pt-BR": "Direita",
+                          "pt-PT": "Direita",
+                          "sv": "Höger",
+                          "th": "ด้านขวา",
+                          "tr": "Sağ",
+                          "vi": "Bên phải",
+                          "zh-CN": "右侧",
+                          "zh-TW": "右方"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                      "type": "text",
+                      "id": "text",
+                      "label": "Product text"
+                  }            
+            ]
+        }
+    ]
+}
+{% endschema %}

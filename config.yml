@@ -1,0 +1,6 @@
+development:
+  password: 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
+  theme_id: 124510503088
+  store: clothable-vietnam.myshopify.com
+  ignore_files:
+    - config/settings_data.json

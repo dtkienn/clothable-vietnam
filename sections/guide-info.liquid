@@ -1,0 +1,46 @@
+<div class="guide-product-box guide-info-container">
+    {% for block in section.blocks %}
+        <div class="guide-info">
+            <div class="guide-info-left">
+                {{ block.settings.svg }}
+            </div>
+            <div class="guide-info-right">
+                <div class="guide-info-right-title">
+                    {{ block.settings.text1 }}
+                </div>
+                <div class="guide-info-right-content">
+                    {{ block.settings.text2 }}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+{% schema %}
+{
+    "name": "Care guide info",
+    "blocks" : [
+        {
+            "name": "Care guide info",
+            "type": "select",
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "text1",
+                    "label": "Info title"
+                },
+                {
+                    "type": "text",
+                    "id": "text2",
+                    "label": "Info content"
+                },
+                {
+                    "type": "textarea",
+                    "id": "svg",
+                    "label": "Enter icon svg code"
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}

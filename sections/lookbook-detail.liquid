@@ -1,0 +1,231 @@
+{% for block in section.blocks %}
+    {% if block.type == 'select' %}
+    {% case block.settings.img_alignment %}
+    {% when 'left' %}
+        {% assign large_img_alignment = 'order: 1' %}
+        {% assign small_img_alignment = 'order: 2' %}
+    {% when 'right' %} 
+        {% assign large_img_alignment = 'order: 2' %}
+        {% assign small_img_alignment = 'order: 1' %}
+    {% endcase %}
+        <div class="custom-page-width lookbook-detail-container">
+            {% if block.settings.large_img %}
+            <div style="{{ large_img_alignment }}" class="lookbook-img-container flex-mobile-top" style="height: auto">
+                <img class="lookbook-large-img" src="{{ block.settings.large_img | img_url: 'master' }}" alt="" width="624px">
+                {% if block.settings.product1 %}
+                    <div class="lookbook-product-name">
+                        {% for i in (1..4) %}
+                            {%- assign product_handle = "product" | append: i -%}
+                            {%- assign featured_product = all_products[block.settings[product_handle]] -%} 
+                            {% unless block.settings[product_handle] == empty %}
+                            <a href="{{ featured_product.url }}">
+                                <div>{{ featured_product.title }}<span> &minus;	{{ featured_product.price | money }}</span></div>
+                            </a>
+                            {% endunless %}
+                        {% endfor %}          
+                    </div>                
+                {% endif %}
+            </div>
+            {% endif %}
+            {% if block.settings.small_img %}
+            <div style="{{ small_img_alignment }}" class="lookbook-img-container flex-mobile-bottom" style="height: auto;">
+                <img class="lookbook-small-img" src="{{block.settings.small_img | img_url: 'master' }}" alt="" width="624px">
+            </div>
+            {% endif %}
+        </div>
+    {% elsif block.type == 'blog' %}
+        <div class="custom-page-width lookbook-detail-container">
+            {% for i in (1..4) %}
+            {%- assign product_handle = "product" | append: i -%}
+            {%- assign featured_product = all_products[block.settings[product_handle]] -%} 
+                <div class="lookbook-product-card">
+                    <a href="{{ featured_product.url}}">
+                    {% unless block.settings[product_handle] == empty %}
+                    <img style="max-height: 384px;"src="{{ featured_product.images[0] | img_url: '294x392' }}" alt="">
+                    {% include 'appmate-wishlist-king' %}
+                    <div>haha</div> 
+                    {% endunless %}
+                    <div class="lookbook-product-card-info">
+                        <div>{{ featured_product.title }}</div>
+                        <div>{{ featured_product.price | money }}</div>
+                    </div>
+                    </a>
+                </div>
+        {% endfor %}          
+        </div>
+    {% endif %} 
+{% endfor %} 
+<style>
+    @media only screen and (max-width: 875px) {
+        .flex-mobile-top {
+            order: 1 !important;
+        }
+        .flex-mobile-bottom {
+            order: 2 !important;
+        }
+    }
+    .lookbook-product-card {
+        display: flex;
+        flex-direction: column;
+    }
+    .lookbook-product-card-info {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        text-transform: uppercase;
+        margin-top: 16px;
+    }
+    .lookbook-product-card a {
+        border: none !important;
+    }
+    .lookbook-product-card {
+        padding-left: 36px;
+    }
+    .lookbook-detail-container {
+        display: flex; 
+        flex-direction: row;
+        justify-content: center;
+    }
+    .lookbook-detail-container:not(:first-child) {
+        height: auto;
+        margin-top: 128px;
+        margin-bottom: 128px;
+    }
+    .lookbook-img-container {
+        height: auto;
+    }
+    .lookbook-small-img {
+        padding-left: 6.75rem;
+        padding-top: 6.75rem;
+        padding-right: 3rem;
+    }
+    .lookbook-product-name {
+        font-size: 15px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 23px;
+        letter-spacing: 0em;
+        text-align: left;
+        color: #212121;
+        padding-top: 20px;
+        text-transform: uppercase;
+    }
+    .lookbook-product-name {
+        height: 150px;
+    }
+    @media only screen and (max-width: 749px) {
+        .lookbook-detail-container:first-child {
+            flex-direction: column;
+        }
+        .lookbook-img-container img:first-child {
+            max-height: unset;
+            width: 100%;
+        }
+    } 
+    @media only screen and (max-width: 875px) {
+        .lookbook-detail-container {
+            flex-wrap: wrap;
+            flex-basis: 50%;
+        }
+        .lookbook-product-card {
+            padding-left: 15px;
+            padding-bottom: 2rem;
+            padding-left: unset;
+        }
+        .lookbook-product-card:nth-child(2n+1) {
+            padding-right: 7.5px;
+        }
+        .lookbook-product-card:nth-child(2n){
+            padding-left: 7.5px;
+        }
+    }
+    @media only screen and (max-width: 647px) {
+        .lookbook-product-card {
+            flex-basis: 50%;
+            width: 250px;
+        }
+    }
+</style>
+{% schema %}
+{
+    "blocks": [
+        {
+            "name": "Featured product image",
+            "type": "select",
+            "settings": [
+                {
+                    "type": "image_picker",
+                    "label": "Choose large image",
+                    "id":"large_img"
+                },
+                {
+                    "type": "image_picker",
+                    "label": "Choose small image",
+                    "id":"small_img"
+                },
+                {
+                    "type": "product",
+                    "id": "product1",
+                    "label": "Choose first product with price"
+                },
+                {
+                    "type": "product",
+                    "id": "product2",
+                    "label": "Choose your product with price"
+                },
+                {
+                    "type": "product",
+                    "id": "product3",
+                    "label": "Choose your product with price"
+                },
+                {
+                    "type": "product",
+                    "id": "product4",
+                    "label": "Choose your product with price"
+                },
+                {
+                    "type": "select",
+                    "id": "img_alignment",
+                    "label": "Large image alignment",
+                    "options": [
+                        {
+                            "value": "left",
+                            "label": "Left"
+                        },
+                        {
+                            "value": "right",
+                            "label": "Right"
+                        }
+                    ],
+                    "default": "left"
+                }
+            ] 
+        },
+        {
+            "name": "Product line",
+            "type": "blog",
+            "settings": [
+                {
+                    "type": "product",
+                    "id": "product1",
+                    "label": "Choose your product"
+                },
+                {
+                    "type": "product",
+                    "label": "Choose your product",
+                    "id": "product2"
+                },                {
+                    "type": "product",
+                    "label": "Choose your product",
+                    "id": "product3"
+                },
+                {
+                    "type": "product",
+                    "label": "Choose your product",
+                    "id": "product4"
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}

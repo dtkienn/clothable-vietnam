@@ -1,0 +1,243 @@
+<div class="faq-detail-container">
+    <div class="faq-nav-header">
+        <a style="border-bottom: none;" href="/collections">
+            <span><svg width="7" height="12" viewBox="0 0 7 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6 1L1 6L6 11" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span> 
+            BACK TO SHOPPING        
+        </a>
+    </div>
+    <div style="display: flex; flex-direction: row;">
+        <div class="faq-nav" style="flex-basis: 20%;">
+            {% for i in (1..6) %}
+                {% assign faq_text = 'faq_text' | append: i %}
+                {% assign svg = 'svg' | append: i %}
+                {% assign faq_link = 'faq_link' | append: i %}
+                <a style=" {% if section.settings[faq_text] == page.title %} color: black; font-weight: 600 {% else %} color: #616161; font-weight: 500;{% endif %}"href=" {{ section.settings[faq_link] }}">
+                    <div class="faq-nav-line" style="">
+                        <span>
+                            {{ section.settings[svg] }}
+                        </span>
+                        {{ section.settings[faq_text] }}
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+        <div class="faq-right" style="flex-basis: 80%;">
+            {% for block in section.blocks %}
+                {% assign i = forloop.index %}
+                    {% assign faq_text = 'faq_text' | append: i %}
+                    {% assign svg = 'svg' | append: i %}
+                    {% assign faq_link = 'faq_link' | append: i %}
+            <div style="{% if section.settings[faq_text] == page.title %} display: block; {% else %} display: none;{% endif %}" class="feature-content feature-row__item feature-row__text feature-row__text--{{ section.settings.layout }}">
+                <h3 class="faq-detail-subtitle">{{ page.title }}</h3>
+                {% for i in (1..5) %}
+                    {% assign accordion_label = 'accordion_label' | append: i %}
+                    {% assign accordion_content = 'accordion_content' | append: i %}
+                {% if block.settings[accordion_label] != blank and block.settings[accordion_content] != blank %}
+                <div class="qt-content">
+                    <div class="qt-accordion {% if forloop.first == true %} qt-active {% endif %}">{{ block.settings[accordion_label] }}</div>
+                    <div class="qt-panel {% if forloop.first == true %} panel-active {% endif %}">
+                        <p>{{ block.settings[accordion_content] }}</p>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+            {% endfor %}    
+        </div>
+    </div>
+</div>
+<script>
+    var acc = document.getElementsByClassName("qt-accordion");
+    var i;
+
+    for (i = 0; i < acc.length; i++) {
+    acc[i].addEventListener("click", function() {
+        var pan = document.querySelectorAll(".qt-panel");
+        if (this.classList.contains("qt-active")) {
+          pan.forEach(function(p){
+          p.classList.remove("panel-active");
+          p.previousElementSibling.classList.remove("qt-active")
+        })
+      }
+        else {
+          pan.forEach(function(p){
+          p.classList.remove("panel-active");
+          p.previousElementSibling.classList.remove("qt-active")
+        })
+          this.classList.toggle("qt-active");
+        }
+        // document.getElementsByClassName("panel-active")[0].classList.remove("panel-active");
+        // document.getElementsByClassName("qt-active")[0].classList.remove("panel-active");
+        /* Toggle between hiding and showing the active panel */
+        var panel = this.nextElementSibling;
+        if (this.classList.contains("qt-active")) {
+          panel.classList.toggle("panel-active");
+        }
+    })
+  };
+  </script>
+{% schema %}
+{
+    "name": "FAQ Link List",
+    "blocks": [
+        {
+            "name": "FAQ Detail Content",
+            "type": "select",
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "accordion_label1",
+                    "label": "Enter accordion label 1",
+                    "default": "Can I exchange an item?"
+                },
+                {
+                    "type": "richtext",
+                    "id": "accordion_content1",
+                    "label": "Enter accordion content 1"
+                },
+                {
+                  "type": "text",
+                  "id": "accordion_label2",
+                  "label": "Enter accordion label 2",
+                  "default": "Is it possible to repair my bag?"
+                },
+                {
+                  "type": "richtext",
+                  "id": "accordion_content2", 
+                  "label": "Enter accordion content 2"
+                },
+                {
+                  "type": "text",
+                  "id": "accordion_label3",
+                  "label": "Enter accordion label 3"
+                },
+                {
+                  "type": "richtext",
+                  "id": "accordion_content3",
+                  "label": "Enter accordion content 3"
+                },
+                {
+                  "type": "text",
+                  "id": "accordion_label4",
+                  "label": "Enter accordion label 4"
+                },
+                {
+                  "type": "richtext",
+                  "id": "accordion_content4",
+                  "label": "Enter accordion content 4"
+                },
+                {
+                    "type": "text",
+                    "id": "accordion_label5",
+                    "label": "Enter accordion label 5"
+                },
+                {
+                    "type": "richtext",
+                    "id": "accordion_content5",
+                    "label": "Enter accordion content 5"
+                }
+            ]
+        }
+    ],
+    "settings": [
+        {
+            "type": "url",
+            "id": "faq_link1",
+            "label": "Choose your first link"
+        },
+        {         
+            "type": "text",
+            "id": "faq_text1",
+            "label": "Choose your first text",
+            "default": "ORDERS AND PAYMENTS"
+        }, 
+        {
+            "type": "textarea",
+            "id": "svg1",
+            "label": "Choose your first svg"
+        },
+        {
+            "type": "url",
+            "id": "faq_link2",
+            "label": "Choose your second link"
+        },
+        {
+            "type": "text",
+            "id": "faq_text2",
+            "label": "Choose your second text",
+            "default": "DELIVERY"
+        },
+        {
+            "type": "textarea",
+            "id": "svg2",
+            "label": "Choose your second svg"
+        },
+        {
+            "type": "url",
+            "id": "faq_link3",
+            "label": "Choose your third link"
+        },
+        {
+            "type": "text",
+            "id": "faq_text3",
+            "label": "Choose your third text",
+            "default": "RETURNS AND EXCHANGES"
+        },
+        {
+            "type": "textarea",
+            "id": "svg3",
+            "label": "Choose your third svg"
+        },
+        {
+            "type": "url",
+            "id": "faq_link4",
+            "label": "Choose your fourth link"
+        },
+        {
+            "type": "text",
+            "id": "faq_text4",
+            "label": "Choose your fourth text",
+            "default": "CARE AND REPAIR"
+        },
+        {
+            "type": "textarea",
+            "id": "svg4",
+            "label": "Choose your fourth svg"
+        },
+        {
+            "type": "url",
+            "id": "faq_link5",
+            "label": "Choose your fifth link"
+        },
+        {
+            "type": "text",
+            "id": "faq_text5",
+            "label": "Choose your fifth text",
+            "default": "GIFT CARDS"
+        },
+        {
+            "type": "textarea",
+            "id": "svg5",
+            "label": "Choose your fifth svg"
+        },
+        {
+            "type": "url",
+            "id": "faq_link6",
+            "label": "Choose your sixth link"
+        },
+        {
+            "type": "text",
+            "id": "faq_text6",
+            "label": "Choose your sixth text",
+            "default": "MY ACCOUNT"
+        },
+        {
+            "type": "textarea",
+            "id": "svg6",
+            "label": "Choose your sixth svg"
+        }
+    ]
+}
+{% endschema %}

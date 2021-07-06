@@ -1,0 +1,114 @@
+{% if cart.item_count > 0 %}
+    <form action="{{ routes.cart_url }}" method="post" novalidate class="cart">
+        <div class="cart-product-info">
+            <h1 class="for-cart-page">{{ 'cart.drawer.your_cart' | t }}</h1>
+
+            <div class="cart-items" data-count="{{ cart.item_count }}">
+                {%- for item in cart.items -%}
+                    <div class="cart__row">
+                        <div class="cart__image-wrapper">
+                            <a href="{{ item.url }}"></a>
+                                <img class="cart__image{% if item.image == null %} hide{% endif %}" src="{{ item | img_url: '184x' }}" alt="{{ item.image.alt | escape }}">
+                            </a>
+                        </div>
+                        <div class="cart__info">
+                            <a href="{{ item.url }}" class="cart__product-title">
+                                {{ item.product.title }}
+                            </a>
+
+                            {%- assign variant_options = 'template ' | split: ' ' -%}
+                            {%- if item.product.has_only_default_variant != true -%}
+                            {%- assign variant_options = item.options_with_values -%}
+                            {%- endif -%}
+                            
+                            <ul class="product-details" aria-label="{{ 'cart.label.product_details' | t }}">
+                                {%- for option in variant_options -%}
+                                    <li class="product-details__item product-details__item--variant-option{% if item.product.has_only_default_variant %} hide{% endif %}">{{ option.value }}</li>
+                                {%- endfor -%}
+                            </ul>
+
+                            <div class="cart__price">
+                                <dl>
+                                    <dt>
+                                        <span class="visually-hidden">{{ 'products.product.regular_price' | t }}</span>
+                                    </dt>
+                                    <dd>
+                                        {{ item.original_price | money }}
+                                    </dd>
+                                </dl>
+                            </div>
+
+                            <div class="cart__qty">
+                                <div class="qty-action js-qty-action minus" data-line="{{ forloop.index }}" data-quantity="{{ item.quantity | minus: 1 }}">{% render 'icon-minus' %}</div>
+                                <input id="updates_{{ item.key }}" class="cart__qty-input" type="text" readonly
+                                value="{{ item.quantity }}" pattern="[0-9]*"
+                                data-quantity-item="{{ forloop.index }}">
+                                <div class="qty-action js-qty-action plus" data-line="{{ forloop.index }}" data-quantity="{{ item.quantity | plus: 1 }}">{% render 'icon-plus' %}</div>
+                            </div>
+                        </div>
+                    </div>
+                {%- endfor -%}
+            </div>
+        </div>
+        
+        {% comment %}Cart drawer{% endcomment %}
+        <div class="cart-footer for-cart-drawer">
+            <div class="cart-subtotal">
+                <span class="cart-subtotal__title">{{ 'cart.general.subtotal' | t }}</span>
+                <span class="cart-subtotal__price">{{ cart.total_price | money }}</span>
+            </div>
+            <div class="cart-footer-btn">
+                <a href="{{ routes.cart_url }}" class="btn btn--secondary">
+                    {% render 'icon-cart' %}
+                    <span>{{ 'cart.drawer.view_cart' | t }}</span>
+                </a>
+                <a href="/checkout" class="btn cart__submit">
+                    {% render 'icon-check' %}
+                    <span>{{ 'cart.general.checkout' | t }}</span>
+                </a>
+            </div>
+        </div>
+        {% comment %}Cart page{% endcomment %}
+        <div class="cart-summary-wrap for-cart-page">
+            <div class="cart-summary">
+                <div class="cart-summary-header">
+                    <p>
+                        <span class="cart-subtotal__title">{{ 'cart.general.subtotal' | t }}</span>
+                        <span class="cart-subtotal__price">{{ cart.total_price | money }}</span>
+                    </p>
+                    <p>
+                        <span class="cart-subtotal__title">{{ 'cart.general.shipping' | t }}</span>
+                        <span class="cart-subtotal__price">{{ 0 | money }}</span>
+                    </p>
+                </div>
+                {%- if section.settings.cart_notes_enable -%}
+                    <div class="cart-note">
+                        <label for="CartSpecialInstructions" class="cart-note__label small--text-center">{{ 'cart.general.note' | t }}</label>
+                        <textarea name="note" id="CartSpecialInstructions" class="cart-note__input" data-cart-notes>{{ cart.note }}</textarea>
+                    </div>
+                {%- endif -%}
+                <p>
+                    <span class="cart-subtotal__title">{{ 'cart.general.total' | t }}</span>
+                    <span class="cart-subtotal__price">{{ cart.total_price | money }}</span>
+                </p>
+                <a href="/checkout" class="btn cart__submit">
+                    {% render 'icon-check' %}
+                    <span>{{ 'cart.general.checkout_cart' | t }}</span>
+                </a>
+            </div>
+            
+            <div class="payment-icons">
+                <span>{{ 'general.payment.method' | t }}</span>
+                {% render 'icon-payment' %}
+            </div>
+        </div>
+    </form>
+{% else %}
+    <div class="cart-empty">
+        {% render 'icon-cart-empty' %}
+        <p class="cart--empty-message">{{ 'cart.general.empty' | t }}</p>
+        <a href="{{ routes.all_products_collection_url }}" class="text-link text-link--accent">
+            {{ 'cart.general.continue_shopping' | t }}
+        </a>    
+    </div>
+{% endif %}

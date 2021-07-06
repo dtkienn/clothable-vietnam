@@ -1,0 +1,104 @@
+<div class="page-width">
+  <div class="register-page">
+    <h1 id="RegisterHeading" class="text-center">{{ 'customer.register.title' | t }}</h1>
+
+    <div class='oxi-social-login'></div>
+
+    {%- assign formId = 'RegisterForm' -%}
+    {% form 'create_customer', id: formId, novalidate: 'novalidate', data-form: 'register' %}
+      {% include 'form-status', form: form, form_id: formId %}
+
+      <div class="form-register-wrap">
+        <div class="form-mandatory">
+          <input 
+            type="text" 
+            name="customer[first_name]" 
+            id="{{ formId }}-FirstName" 
+            {% if form.first_name %}value="{{ form.first_name }}"{% endif %} 
+            autocomplete="given-name"
+            placeholder="{{ 'customer.register.first_name' | t }}"
+          >
+        </div>
+
+        <div class="form-mandatory">
+          <input 
+            type="text" 
+            name="customer[last_name]" 
+            id="{{ formId }}-LastName" 
+            {% if form.last_name %}value="{{ form.last_name }}"{% endif %} 
+            autocomplete="family-name"
+            placeholder="{{ 'customer.register.last_name' | t }}"
+          >
+        </div>
+
+        <div class="form-mandatory">
+          <input 
+            type="text" 
+            autocomplete="city"
+            placeholder="{{ 'customer.register.city' | t }}" 
+            name="customer[note][city]" 
+            id="{{ formId }}-City" >
+        </div>
+
+        <div class="form-mandatory form-group--date">
+          <input 
+            type="text" 
+            autocomplete="birthday"
+            placeholder="{{ 'customer.register.birthday' | t }}" 
+            name="customer[note][birthday]" 
+            id="{{ formId }}-Birthday" >
+        </div>
+
+        <div class="form-mandatory">
+          <input
+            type="email"
+            name="customer[email]"
+            id="{{ formId }}-email"
+            {% if form.email %} value="{{ form.email }}"{% endif %}
+            autocorrect="off"
+            autocapitalize="off"
+            autocomplete="email"
+            aria-required="true"
+            placeholder="{{ 'customer.register.email' | t }}"
+          >
+        </div>
+        
+        <div class="form-mandatory form-group--password">
+          <span class="show-password">{{ 'customer.login.show_pass' | t }}</span>
+
+          <input
+            type="password"
+            name="customer[password]"
+            id="{{ formId }}-password"
+            aria-required="true"
+            placeholder="{{ 'customer.register.password' | t }}"
+          >
+        </div>
+      </div>
+
+      <div class="login-button-wrap">
+        <input type="submit" value="{{ 'customer.register.submit' | t }}" class="btn">
+      </div>
+
+      <div class="text-center">
+        <div class="mandatory-note">{{ 'customer.login.mandatory_note' | t }}</div>
+
+        <div id="accepts_marketing">
+          <input type="checkbox" name="customer[accepts_marketing]" value="true" id="marketing" />
+          <label for="marketing">Subscribe to Newsletter</label>
+        </div>
+      </div>
+
+      <div class="other-action-account">
+        <p>{{ 'customer.login.login_mess' | t }}</p>
+        <a href="{{ routes.account_login_url }}" class="btn btn--secondary">{{ 'layout.customer.log_in' | t }}</a>
+      </div>
+    {% endform %}
+  </div>
+</div>
+
+<style>
+  .form-mandatory label.error:before {
+    background-image: url({{ 'icon-error.svg' | asset_url }});
+  }
+</style>

@@ -1,0 +1,318 @@
+<div class="leather-container" id="ProductSection-{{ section.id }}" data-section-id="{{ section.id }}">
+    {% for block in section.blocks %}
+        {% if block.settings.image %}
+        <div class="leather-grid">
+            <div class="leather-grid-top">
+                <div style="background: url( {{ block.settings.image | img_url: 'master' }} ); background-size: cover;" class="leather-img">
+                </div>
+                <div class="leather-text">
+                    {{ block.settings.leather_name }}
+                </div>
+            </div>
+            <div class="custom-page-width leather-popup">
+                <div class="leather-content-container">
+                    <div class="leather-title"><span>LEATHER << {{ block.settings.leather_name | remove: 'Leather' | remove: 'leather' }} >></span><span id="close-popup"> &times; </span>
+                    </div>
+                    <div class="leather-info">
+                        <div class="leather-content">
+                            {{ block.settings.text_1 }}
+                        </div>
+                    </div>
+                </div>
+                <div class="leather-product-container">
+                    <div class="leather-title">{{ block.settings.text_2_title }}</div>
+                    {%- if block.settings.leather_product != blank -%}
+                        <div class="leather-product" style="display: flex; flex-direction: row;">
+                            {%- assign product = all_products[block.settings.leather_product] -%}
+                            {%- assign current_variant = product.selected_or_first_available_variant -%}
+                            <a href="{{ product.url }}" class="leather-product-img-wrap">
+                                {% capture image_size %}120x
+                                {% endcapture %}
+                                <img style="width: 100%;" src="{{ product.featured_image | img_url: image_size }}" srcset="{{ product.featured_image | img_url: image_size }} 1x, {{ product.featured_image | img_url: image_size, scale: 2 }} 2x, {{ product.featured_image | img_url: image_size, scale: 3 }} 3x" alt="" class="maintenance__popup-product-img">
+                            </a>
+                            <div class="leather-product-info">
+                                <div class="leather-product-title"> <a href="{{ product.url }}"> {{ product.title }} </a></div>
+                                <div class="leather-product-money"> {{ product.price | money }} </div>
+                                <form action="/cart/add" method="post" id="product-form-{{ product.id }}">
+                                    <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+                                    <div>
+                                        <button type="submit" name="add" class="btn">{{ 'products.product.add_to_cart' | t }}</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    {% endfor %}
+
+
+</div>
+<script>
+    var grids = document.querySelectorAll('.leather-grid');
+    grids.forEach(function(grid){
+        grid.addEventListener("click", function(){
+            var leatherPopup = grid.querySelector('.leather-popup');
+
+            leatherPopup.classList.toggle("grid-hide");
+
+            document.getElementById('close-popup').addEventListener("click", function() {
+            leatherPopup.classList.toggle("grid-hide");
+    })
+
+        })
+    })
+</script>
+
+<style>
+    #close-popup {
+        display: inline-block;
+        cursor: pointer;
+        font-size: 20px;
+    }
+    @media only screen and (min-width: 1000px) {
+        #close-popup {
+            display: none;
+        }
+    }
+    .rte .leather-product-info a:not(.btn) {
+        border-bottom: unset;
+    }
+    .leather-product-container {
+        padding-top: 15px;
+    }
+    .leather-product-info btn {
+        padding: 24px 13px;
+    }
+    .leather-product-info {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin-left: 24px;
+    }
+    .leather-product-title {
+        margin-bottom: 8px;
+        font-size: 12px;
+        line-height: 20px;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font-weight: 600;
+    }
+    .leather-product-money {
+        font-size: 16px;
+        line-height: 16px;
+        letter-spacing: 0.03em;
+        margin-bottom: 24px;
+        font-weight: 600;
+    }
+    .leather-container {
+        color: #000;
+    }
+    .leather-container .leather-content p {
+        color: #000;
+    }
+    .leather-product-img-wrap {
+        width: 105px;
+        height: 140px;
+        border-bottom: unset !important;
+    }
+    .leather-content-container {
+        padding-top: 15px;
+        padding-right: 80px;
+    }
+    .leather-title {
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 16px;
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+        margin-bottom: 20px;
+    }
+    .leather-grid-top {
+        position: relative;
+    }
+    .leather-grid-top::after{
+        content: '';
+        border-bottom: 1px solid transparent;
+        display: block;
+        position: absolute;
+        bottom: -22px;
+        width: 100%;
+        background-image: unset;
+        background-position: center 2px;
+        background-repeat: no-repeat;
+        background-size: contain;
+        height: 10px;
+        opacity: 0;
+        transition: .4s all;
+    }
+    .our-leathers-page.custom-page-width {
+        padding-left: 60px;
+        padding-right: 60px;
+        max-width: 1440px;
+    }
+    .leather-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+    .leather-img {
+        position: relative;
+        padding-bottom: 100%;
+        background-size: cover;
+    }
+    .leather-text {
+        display: block;
+        position: absolute;
+        transform: translate(-50%, -50%);
+        top: 50%;
+        left: 50%;
+        color: white;
+        font-size: 24px;
+        line-height: 24px;
+        text-transform: uppercase;
+        width: 100%;
+        text-align: center;
+        transition: 0.5s all;
+    }
+    .leather-content {
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 22px;
+        letter-spacing: 0em;
+    }
+    .leather-popup {
+        margin-top: 22px;
+        border: 1px black solid;
+        padding: 24px 78px 30px;      
+        display: none;
+        position: absolute;
+        top: auto;
+        bottom: auto;
+        left: 78px;
+        right: 78px;
+        height: auto;
+        z-index: 1;
+        overflow: auto;
+        background-color: #fff;
+        max-width: 1284px;
+    }
+    .leather-grid {
+        padding-bottom: 36px;
+    }
+    .leather-grid:not(:nth-child(3n+1)) {
+        padding-right: 18px;
+    }
+    .leather-grid:not(:nth-child(3n+2)) {
+        padding-right: 18px;
+        padding-left: 18px;
+    }
+    .leather-grid:not(:nth-child(3n+1)) {
+        padding-left: 18px;
+    }
+    .leather-grid:hover > .leather-grid-top::after {
+        opacity: 1;
+    }
+    @media only screen and (min-width: 999px) {
+        .leather-popup {
+            height: 270px;
+        }
+        .leather-grid:hover > .leather-popup {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+        }
+        .leather-text {
+            display: none;
+        }
+        .leather-grid:hover > .leather-grid-top .leather-text {
+            display: block;
+        }
+        .leather-grid-top::after {
+            background-image: url(https://cdn.shopify.com/s/files/1/0099/7618/4917/t/34/assets/icon-1.svg);
+        }
+    }
+    @media only screen and (max-width: 999px) {
+        .leather-popup {    
+            display: none;
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1;
+            height: 100%;
+            padding: 20px 15px 40px;
+            overflow: auto;
+            background-color: #fff;
+            font-size: 13px;
+            line-height: 20px;
+            border: none;
+        }
+        .leather-content-container { 
+            padding-right: unset;
+        }
+        .leather-title {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 20px;
+        }
+    }
+    @media only screen and (max-width: 999px) {
+        .leather-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+        .leather-grid {
+            padding: 0 5px 20px !important;
+        }
+        .our-leathers-page.custom-page-width {
+            padding: 0 20px;
+        }
+        .leather-text {
+            font-size: 16px;
+        }
+    }
+</style>
+{% schema %}
+{
+    "name": "Leather blocks",
+    "blocks": [
+        {
+            "name": "Leather block",
+            "type": "select",
+            "settings": [
+                {
+                    "type": "image_picker",
+                    "id": "image",
+                    "label": "Choose leather image"
+                },
+                {
+                    "type": "text",
+                    "id": "leather_name",
+                    "label": "Leather name"
+                },
+                {
+                    "type": "richtext",
+                    "id": "text_1",
+                    "label": "Detailed content",
+                    "default": "<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos vel quod dicta sed saepe perferendis ex, magnam nisi dolores ad! </p>" 
+                },
+                {
+                    "type": "text",
+                    "id": "text_2_title",
+                    "label": "Product part title",
+                    "default": "Care tips"
+                },
+                {
+                    "type": "product",
+                    "id": "leather_product",
+                    "label": "Leather recommended product"
+                }
+            ]    
+        }
+    ]
+}
+{% endschema %}
+

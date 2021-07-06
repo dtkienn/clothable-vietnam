@@ -1,0 +1,21 @@
+<div class="breadcrumb">
+    {{ section.settings.parent }} / {{ page.title }}
+</div>
+
+{% schema %}
+{
+    "name": "Breadcrumb",
+    "settings": [
+        {
+            "type": "url",
+            "id": "url",
+            "label": "Link to parent site"
+        },
+        {
+            "type": "text",
+            "id": "parent",
+            "label": "Parent site name"
+        }
+    ]
+}
+{% endschema %}

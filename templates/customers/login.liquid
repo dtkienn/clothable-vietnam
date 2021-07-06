@@ -1,0 +1,123 @@
+<div class="page-width">
+  <div class="login-page">
+    <div class="form-message form-message--success hide" id="ResetSuccess" tabindex="-1">
+      {{ 'customer.recover_password.success' | t }}
+    </div>
+
+    <div id="CustomerLoginForm" class="form-vertical">
+      <h1 id="LoginHeading" class="text-center">{{ 'customer.login.title' | t }}</h1>
+      {% form 'customer_login', novalidate: 'novalidate', data-form: 'login' %}
+
+        {%- if form.errors -%}
+          <div class="form-message form-message--error">
+            <h2 class="h3 form-message__title " tabindex="-1" data-form-status>{{ 'contact.form.error_heading' | t }}</h2>
+            {{ form.errors | default_errors }}
+          </div>
+        {%- endif -%}
+
+        <div class="form-mandatory">
+          <input
+            type="email"
+            name="customer[email]"
+            id="CustomerEmail"
+            autocomplete="email"
+            autocorrect="off"
+            autocapitalize="off"
+            placeholder="{{ 'customer.login.email' | t }}"
+            >
+        </div>
+
+        {% if form.password_needed %}
+        <div class="form-mandatory form-group--password">
+          <input
+            type="password"
+            value=""
+            name="customer[password]"
+            id="CustomerPassword"
+            placeholder="{{ 'customer.login.password' | t }}"
+          >
+          <span class="show-password">{{ 'customer.login.show_pass' | t }}</span>
+        </div>
+        {% endif %}
+
+        <div class="login-button-wrap">
+          <input type="submit" class="btn" value="{{ 'customer.login.sign_in' | t }}">
+          
+          {% if form.password_needed %}
+            <a href="#recover" id="RecoverPassword">{{ 'customer.login.forgot_password' | t }}</a>
+          {% endif %}
+        </div>
+
+        <div class="mandatory-note">{{ 'customer.login.mandatory_note' | t }}</div>
+
+        <div class="other-action-account">
+          <p>{{ 'customer.login.create_mess' | t }}</p>
+          <a href="{{ routes.account_register_url }}" class="btn btn--secondary">{{ 'layout.customer.create_account' | t }}</a>
+        </div>
+      {% endform %}
+    </div>
+
+    <div id="RecoverPasswordForm" class="hide">
+
+      <div class="text-center">
+        <h2 id="RecoverHeading">{{ 'customer.recover_password.title' | t }}</h2>
+        <p>{{ 'customer.recover_password.subtext_1' | t }}<br/>{{ 'customer.recover_password.subtext_2' | t }}</p>
+      </div>
+
+      <div class="form-vertical">
+        {% form 'recover_customer_password', data-form: 'forgot_password' %}
+          {% comment %}
+            Add a hidden span to indicate the form was submitted succesfully.
+          {% endcomment %}
+          {% if form.posted_successfully? %}
+            <span class="hide reset-password-success"></span>
+          {% endif %}
+          <div class="form-mandatory">
+            <input
+              type="email"
+              value=""
+              name="email"
+              id="RecoverEmail"
+              class="input-full"
+              placeholder="{{ 'customer.recover_password.email' | t }}"
+              autocorrect="off"
+              autocapitalize="off"
+              >
+          </div>
+          
+          <div class="login-button-wrap">
+            <input type="submit" class="btn" value="{{ 'customer.recover_password.submit' | t }}">
+          </div>
+
+          <div class="text-center">
+            <div class="mandatory-note">{{ 'customer.login.mandatory_note' | t }}</div>
+
+            <a href="#LoginHeading" id="HideRecoverPasswordLink">{{ 'customer.recover_password.cancel' | t }}</a>
+          </div>
+        {% endform %}
+      </div>
+
+    </div>
+
+    {% comment %}
+      If accounts are set as optional, the following will be shown as an option
+      during checkout, not on the default /login page.
+    {% endcomment %}
+    {% if shop.checkout.guest_login %}
+      <div class="text-center">
+        <hr class="hr--invisible">
+        <h2>{{ 'customer.login.guest_title' | t }}</h2>
+
+        {% form 'guest_login' %}
+          <input type="submit" class="btn" value="{{ 'customer.login.guest_continue' | t }}">
+        {% endform %}
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<style>
+  .form-mandatory label.error:before {
+    background-image: url({{ 'icon-error.svg' | asset_url }});
+  }
+</style>

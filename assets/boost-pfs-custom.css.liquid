@@ -1,0 +1,84 @@
+/*********************** Custom CSS for Boost Filter & Search  ************************/
+{% assign breakpointMobile = '767px' %}
+{% assign breakpointDesktop = '768px' %}
+{% assign searchBoxMobileHeight = '64px' %}
+
+/**************************** Place your custom css below  ****************************/
+/* Product */
+.boost-pfs-filter-products .has-bc-quickview {
+	overflow: hidden;
+}
+
+.product-card--list .list-view-item__link {
+	display: table;
+	table-layout: fixed;
+	width: 100%;
+}
+
+.boost-pfs-filter-products .grid-view-item {
+	position: relative;
+}
+
+.boost-pfs-filter-products .full-width-link {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 9;
+}
+
+.boost-pfs-filter-products .price--on-sale .price__sale {
+	display: block;
+}
+
+.boost-pfs-filter-products .price__sale {
+	display: none;
+	color: #557b97;
+}
+
+.boost-pfs-filter-products .price__regular {
+	color: #69727b;
+}
+
+/* Search */
+ul.boost-pfs-search-suggestion, ul.boost-pfs-search-suggestion a {
+	color: #000000;
+}
+
+.boost-pfs-search-suggestion-header {
+	font-size: 13px;
+}
+
+.boost-pfs-search-suggestion-header-view-all a,
+.boost-pfs-search-suggestion-item a {
+	font-size: 14px;
+}
+
+.template-search .filters-toolbar-wrapper {
+	margin-top: 55px;
+}
+
+#SearchInput {
+	display: none !important;
+}
+
+.predictive-search {
+	display: none;
+}
+
+/*.js-drawer-open-top .drawer--top, .js-drawer-open .drawer-page-content::after {opacity: 0;}*/
+/**** Custom Search result toolbar ****/
+.boost-pfs-search-result-toolbar-wrap {
+	border-bottom: 1px solid #ededed;
+	margin-bottom: -1px;
+}
+
+.boost-pfs-search-result-toolbar {
+	margin: 0 auto;
+	border: none;
+}
+
+.filters-toolbar__item-child:first-child {
+	line-height: 42px;
+}

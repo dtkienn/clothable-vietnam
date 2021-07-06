@@ -1,0 +1,120 @@
+<div class="faq-grid-container">
+    {% for i in (1..6) %}
+    {% assign faq_text = 'faq_text' | append: i %}
+    {% assign svg = 'svg' | append: i %}
+    {% assign faq_link = 'faq_link' | append: i %}
+        <div class="faq-grid"><a href="{{ section.settings[faq_link] }}">
+            {{ section.settings[svg] }}
+            <p>
+                {{ section.settings[faq_text] }}
+            </p>
+        </a>
+        </div>
+    {% endfor %}
+</div>
+{% schema %}
+{
+    "name": "FAQ Link List",
+    "settings": [
+        {
+            "type": "url",
+            "id": "faq_link1",
+            "label": "Choose your first link"
+        },
+        {         
+            "type": "text",
+            "id": "faq_text1",
+            "label": "Choose your first text",
+            "default": "YOUR TEXT GOES HERE"
+        }, 
+        {
+            "type": "textarea",
+            "id": "svg1",
+            "label": "Choose your first svg"
+        },
+        {
+            "type": "url",
+            "id": "faq_link2",
+            "label": "Choose your second link"
+        },
+        {
+            "type": "text",
+            "id": "faq_text2",
+            "label": "Choose your second text",
+            "default": "YOUR TEXT GOES HERE"
+        },
+        {
+            "type": "textarea",
+            "id": "svg2",
+            "label": "Choose your second svg"
+        },
+        {
+            "type": "url",
+            "id": "faq_link3",
+            "label": "Choose your third link"
+        },
+        {
+            "type": "text",
+            "id": "faq_text3",
+            "label": "Choose your third text",
+            "default": "YOUR TEXT GOES HERE"
+        },
+        {
+            "type": "textarea",
+            "id": "svg3",
+            "label": "Choose your third svg"
+        },
+        {
+            "type": "url",
+            "id": "faq_link4",
+            "label": "Choose your fourth link"
+        },
+        {
+            "type": "text",
+            "id": "faq_text4",
+            "label": "Choose your fourth text",
+            "default": "YOUR TEXT GOES HERE"
+        },
+        {
+            "type": "textarea",
+            "id": "svg4",
+            "label": "Choose your fourth svg"
+        },
+        {
+            "type": "url",
+            "id": "faq_link5",
+            "label": "Choose your fifth link"
+        },
+        {
+            "type": "text",
+            "id": "faq_text5",
+            "label": "Choose your fifth text",
+            "default": "YOUR TEXT GOES HERE"
+        },
+        {
+            "type": "textarea",
+            "id": "svg5",
+            "label": "Choose your fifth svg"
+        },
+        {
+            "type": "url",
+            "id": "faq_link6",
+            "label": "Choose your sixth link"
+        },
+        {
+            "type": "text",
+            "id": "faq_text6",
+            "label": "Choose your sixth text",
+            "default": "YOUR TEXT GOES HERE"
+        },
+        {
+            "type": "textarea",
+            "id": "svg6",
+            "label": "Choose your sixth svg"
+        }
+    ]
+}
+{% endschema %}
+
+<style>
+</style>

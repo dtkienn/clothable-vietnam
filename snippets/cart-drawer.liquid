@@ -1,0 +1,12 @@
+<div class="cart-drawer-bg"></div>
+<div id="sidebar-cart" class="cart-drawer">
+    <div class="cart-header">
+        <h3>{{ 'cart.drawer.your_cart' | t }}</h3>
+        <div class="close-cart-drawer close-cart-drawer-js">
+            {% render 'icon-close' %}
+        </div>
+    </div>
+    <div class="cart-content" data-cart-content>
+        {% render 'cart-content' %}
+    </div>
+</div>

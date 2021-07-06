@@ -1,0 +1,259 @@
+<div class="guide-product-box feature-row">
+    {% capture image_layout %}
+      <div class="feature-row__item" style="align-self: flex-start;">
+        {% if section.settings.image != blank %}
+          {% capture img_id %}FeatureRowImage-{{ section.id }}{% endcapture %}
+          {% capture wrapper_id %}FeatureRowImageWrapper-{{ section.id }}{% endcapture %}
+          {%- assign img_url = section.settings.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+          <div id="{{ wrapper_id }}" class="feature-row__image-wrapper js">
+            <div class="faq-img-container" style="height: 100%; padding-top:{{ 1 | divided_by: section.settings.image.aspect_ratio | times: 100}}%;" data-image-loading-animation>
+              <img style="height: 100%;" id="{{ img_id }}"
+                   class="feature-row__image lazyload"
+                   data-src="{{ img_url }}"
+                   data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+                   data-aspectratio="{{ section.settings.image.aspect_ratio }}"
+                   data-sizes="auto"
+                   alt="{{ section.settings.image.alt | escape }}">
+            </div>
+          </div>
+  
+          <noscript>
+            {{ section.settings.image | img_url: '600x600', scale: 2 | img_tag: section.settings.image.alt, 'feature-row__image' }}
+          </noscript>
+        {% else %}
+          {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+        {% endif %} 
+      </div>
+    {% endcapture %} 
+
+    <div class="feature-row">
+      {% if section.settings.layout == 'left' %}
+        {{ image_layout }}
+      {% endif %}
+  
+      <div class="feature-content feature-row__item feature-row__text feature-row__text--{{ section.settings.layout }}">
+        <h3 class="faq-subtitle">{{ section.settings.title }}</h3>
+        <div class="faq-detail">{{ section.settings.detail }}</div>
+        {% for block in section.blocks %}
+          <div class="qt-content">
+            <div class="qt-accordion {% if forloop.first == true %} qt-active {% endif %}">{{ block.settings.accordion_label }}</div>
+            <div class="qt-panel {% if forloop.first == true %} panel-active {% endif %}">
+                <p>{{ block.settings.accordion_content }}</p>
+            </div>
+          </div>
+        {% endfor %}
+        {% if section.settings.button_label != blank and section.settings.button_link != blank and section.settings.button_title != blank%}
+          <div class="button-title">
+              {{ section.settings.button_title }}
+          </div>
+          <a href="{{ section.settings.button_link }}"
+          class="btn hero__btn"
+          aria-label="{{ ariaLabel }}">
+          {{- section.settings.button_label -}}
+          </a>
+      {% endif %}
+    </div>
+      {% if section.settings.layout == 'right' %}
+        {{ image_layout }}
+      {% endif %}
+    </div>
+  </div>
+  <script>
+    var acc = document.getElementsByClassName("qt-accordion");
+    var i;
+
+    for (i = 0; i < acc.length; i++) {
+    acc[i].addEventListener("click", function() {
+        var pan = document.querySelectorAll(".qt-panel");
+        if (this.classList.contains("qt-active")) {
+          pan.forEach(function(p){
+          p.classList.remove("panel-active");
+          p.previousElementSibling.classList.remove("qt-active")
+        })
+      }
+        else {
+          pan.forEach(function(p){
+          p.classList.remove("panel-active");
+          p.previousElementSibling.classList.remove("qt-active")
+        })
+          this.classList.toggle("qt-active");
+        }
+        // document.getElementsByClassName("panel-active")[0].classList.remove("panel-active");
+        // document.getElementsByClassName("qt-active")[0].classList.remove("panel-active");
+        /* Toggle between hiding and showing the active panel */
+        var panel = this.nextElementSibling;
+        if (this.classList.contains("qt-active")) {
+          panel.classList.toggle("panel-active");
+        }
+    })
+  };
+  </script>
+  
+  {% schema %}
+  {
+    "name": {
+      "cs": "Obrázek s textem",
+      "da": "Billede med tekst",
+      "de": "Foto mit Text",
+      "en": "Image with question",
+      "es": "Imagen con texto",
+      "fi": "Kuva tekstillä",
+      "fr": "Image avec texte",
+      "it": "Immagine con testo",
+      "ja": "テキスト付き画像",
+      "ko": "텍스트 포함 이미지",
+      "nb": "Bilde med tekst",
+      "nl": "Afbeelding met tekst",
+      "pl": "Obraz z tekstem",
+      "pt-BR": "Imagem com texto",
+      "pt-PT": "Imagem com texto",
+      "sv": "Bild med text",
+      "th": "รูปภาพพร้อมข้อความ",
+      "tr": "Metin içeren görsel",
+      "vi": "Hình ảnh có chữ",
+      "zh-CN": "带文本图片",
+      "zh-TW": "附文字的圖片"
+    },
+    "class": "index-section",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": {
+          "cs": "Obrázek",
+          "da": "Billede",
+          "de": "Foto",
+          "en": "Image",
+          "es": "Imagen",
+          "fi": "Kuva",
+          "fr": "Image",
+          "it": "Immagine",
+          "ja": "画像",
+          "ko": "이미지",
+          "nb": "Bilde",
+          "nl": "Afbeelding",
+          "pl": "Obraz",
+          "pt-BR": "Imagem",
+          "pt-PT": "Imagem",
+          "sv": "Bild",
+          "th": "รูปภาพ",
+          "tr": "Görsel",
+          "vi": "Hình ảnh",
+          "zh-CN": "图片",
+          "zh-TW": "圖片"
+        }
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title"
+      },
+      {
+        "type": "text",
+        "id": "detail",
+        "label": "Detailed content"
+      },
+      {
+        "type": "select",
+        "id": "layout",
+        "label": {
+          "cs": "Zarovnání obrázku",
+          "da": "Justering af billede",
+          "de": "Fotoausrichtung",
+          "en": "Image alignment",
+          "es": "Alineación de imagen",
+          "fi": "Kuvan tasaus",
+          "fr": "Alignement de l'image",
+          "it": "Allineamento immagine",
+          "ja": "画像アラインメント",
+          "ko": "이미지 정렬",
+          "nb": "Bildejustering",
+          "nl": "Afbeelding uitlijnen",
+          "pl": "Wyrównanie obrazu",
+          "pt-BR": "Alinhamento da imagem",
+          "pt-PT": "Alinhamento da imagem",
+          "sv": "Bildjustering",
+          "th": "การจัดวางรูปภาพ",
+          "tr": "Görsel hizalaması",
+          "vi": "Căn chỉnh hình ảnh",
+          "zh-CN": "图片对齐方式",
+          "zh-TW": "圖片對齊"
+        },
+        "default": "left",
+        "options": [
+          {
+            "value": "left",
+            "label": {
+              "cs": "Doleva",
+              "da": "Venstre",
+              "de": "Links",
+              "en": "Left",
+              "es": "Izquierda",
+              "fi": "Vasen",
+              "fr": "Gauche",
+              "it": "Sinistra",
+              "ja": "左",
+              "ko": "왼쪽",
+              "nb": "Venstre",
+              "nl": "Links",
+              "pl": "Do lewej",
+              "pt-BR": "Esquerda",
+              "pt-PT": "Esquerda",
+              "sv": "Vänster",
+              "th": "ด้านซ้าย",
+              "tr": "Sol",
+              "vi": "Bên trái",
+              "zh-CN": "左侧",
+              "zh-TW": "左方"
+            }
+          },
+          {
+            "value": "right",
+            "label": {
+              "cs": "Doprava",
+              "da": "Højre",
+              "de": "Rechts",
+              "en": "Right",
+              "es": "Derecha",
+              "fi": "Oikea",
+              "fr": "Droite",
+              "it": "Destra",
+              "ja": "右",
+              "ko": "오른쪽",
+              "nb": "Høyre",
+              "nl": "Rechts",
+              "pl": "Do prawej",
+              "pt-BR": "Direita",
+              "pt-PT": "Direita",
+              "sv": "Höger",
+              "th": "ด้านขวา",
+              "tr": "Sağ",
+              "vi": "Bên phải",
+              "zh-CN": "右侧",
+              "zh-TW": "右方"
+            }
+          }
+        ]
+      }
+    ],
+    "blocks": [
+      {
+        "name": "Accordion",
+        "type": "select",
+        "settings": [
+          {
+            "type": "text",
+            "id": "accordion_label",
+            "label": "Enter accordion label"
+          },
+          {
+            "type": "text",
+            "id": "accordion_content",
+            "label": "Enter accordion content"
+          }
+        ]
+      }
+    ]
+  }
+  {% endschema %}
+

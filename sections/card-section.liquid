@@ -1,0 +1,119 @@
+<div class="card-section">
+    <div class="card-container">
+        <div class="card-content">
+            {{ section.settings.svg }}
+            <div class="card-title">{{ section.settings.title }}</div>
+            <div class="card-detail">{{ section.settings.content }}</div>
+            {% if section.settings.button_label != blank and section.settings.button_link != blank %}
+            {%- capture ariaLabel -%}
+              {{- section.settings.button_label -}}
+              {%- if section.settings.button_link.type == 'frontpage_link' -%}
+                : {{ 'homepage.general.title' | t -}}
+              {%- elsif section.settings.button_link.type == 'catalog_link' -%}
+                : {{ 'collections.catalog.title' | t -}}
+              {%- elsif section.settings.button_link.object.title -%}
+                : {{ section.settings.button_link.object.title -}}
+              {%- endif -%}
+            {%- endcapture -%}
+    
+            <a href="{{ section.settings.button_link }}"
+              class="btn hero__btn"
+              aria-label="{{ ariaLabel }}">
+              {{- section.settings.button_label | escape -}}
+            </a>
+          {% endif %}  
+        </div>
+    </div>
+</div>
+
+{% schema %}
+{
+    "name": "Info card",
+    "settings": [
+        {
+            "type": "textarea",
+            "id": "svg",
+            "label": "Enter svg"
+        },
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Card title"
+        },
+        {
+            "type": "text",
+            "id": "content",
+            "label": "Card content"
+        },
+        {
+            "type": "text",
+            "id": "button_label",
+            "label": "Button label"
+        },
+        {
+            "type": "url",
+            "id": "button_link",
+            "label": "Button link"
+        }
+    ]
+}
+{% endschema %}
+
+<style>
+    .card-section {
+        height: auto;
+        margin-top: 136px;
+        margin-bottom: 100px;
+        display: flex;
+        justify-content: center;
+    }
+    .card-container {
+        border: 1px #212121 solid;
+        width: 624px;
+    }
+    .card-content {
+        display: flex;
+        flex-direction: column;
+        margin: 64px auto;
+        justify-content: center;
+        align-items: center;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    .card-content svg {
+        margin-bottom: 46px;
+    }
+    .card-title {
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 30px;
+        letter-spacing: 0.03em;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        color: #000;
+    }
+    .card-section .hero__btn {
+        margin-top: 32px;
+    }
+    .card-detail {
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 26px;
+        letter-spacing: 0em;
+        text-align: center;
+    }
+    .card-content .hero__btn {
+        color: white;
+        background: black;
+    }
+    @media only screen and (max-width: 749px) {
+        .card-content .hero__btn {
+            margin-top: 27.5px;
+        }
+        .card-section {
+            margin-top: 60px;
+        }
+    }
+</style>
